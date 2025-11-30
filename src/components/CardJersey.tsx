@@ -13,6 +13,9 @@ export default function CardJersey({ product }: { product: Product }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [showToast, setShowToast] = useState(false);
+  
+  // --- NOUVEAU : État pour suivre l'index de l'image visible ---
+  const [activeIndex, setActiveIndex] = useState(0); 
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -21,13 +24,22 @@ export default function CardJersey({ product }: { product: Product }) {
     addToCart(product, "M", 1);
 
     setShowToast(true);
-    // Le toast disparait après 2.5 secondes
     setTimeout(() => setShowToast(false), 2500);
   };
 
   const handleView = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     navigate(`/product/${product.id}`);
+  };
+
+  // --- NOUVEAU : Handler pour l'événement de défilement ---
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollContainer = e.currentTarget;
+    const scrollLeft = scrollContainer.scrollLeft;
+    const itemWidth = scrollContainer.clientWidth;
+    // Calcule l'index de l'image la plus proche du centre
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    setActiveIndex(newIndex);
   };
 
   return (
@@ -48,15 +60,46 @@ export default function CardJersey({ product }: { product: Product }) {
               </div>
             )}
 
-            {/* Image */}
-            <CardItem translateZ={60} className="w-full h-[260px] overflow-hidden rounded-t-3xl">
-              <img
-                src={product.image_url}
-                alt={product.name}
-                className="w-full h-full object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
+            {/* --- NOUVEAU : Carrousel d'Images --- */}
+            {/* La CardItem permet la translation 3D du conteneur */}
+            <CardItem translateZ={60} className="w-full h-[260px] relative">
+                
+                {/* Conteneur de défilement pour les images */}
+                <div 
+                    className="w-full h-full flex overflow-x-scroll snap-x snap-mandatory scroll-smooth rounded-t-3xl pointer-events-auto"
+                    // Masque la barre de défilement sur Chrome/Edge/Safari (overflow-hidden est sur CardBody)
+                    style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' /* Firefox */ }}
+                    onScroll={handleScroll}
+                >
+                    {product.image_urls.map((url, index) => (
+                        <img
+                            key={index}
+                            src={url}
+                            alt={`${product.name} image ${index + 1}`}
+                            // Important: `flex-none` pour éviter le redimensionnement, `w-full` pour prendre la largeur du parent, `snap-center` pour le défilement centré.
+                            className="flex-none w-full h-full object-cover object-top snap-center"
+                        />
+                    ))}
+                </div>
+
+                {/* Gradient pour l'esthétique */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent pointer-events-none" />
+
+                {/* Indicateurs de pagination (les petits points) */}
+                {product.image_urls.length > 1 && (
+                    <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
+                        {product.image_urls.map((_, index) => (
+                            <div 
+                                key={`dot-${index}`}
+                                className={`h-1.5 rounded-full transition-all duration-300 ${
+                                    index === activeIndex ? 'w-5 bg-emerald-400' : 'w-1.5 bg-gray-500/50'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                )}
             </CardItem>
+            {/* --- FIN NOUVEAU : Carrousel d'Images --- */}
 
             {/* Infos */}
             <div className="flex-1 px-5 py-4 text-center">
