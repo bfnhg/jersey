@@ -7,17 +7,18 @@ import {WavyBackground} from "./ui/wavy-background"; // adjust the path
 export default function HeroWaves() {
   return (
     <WavyBackground
-      waveWidth={60}
-      blur={4}
+      waveWidth={50}
+      blur={2}
       speed="fast"
-      waveOpacity={0.4}
+      waveOpacity={0.7}
       colors={[
-        "#b91c1c", // deep red
-        "#22c55e", // Moroccan green
-        "#ffffff", // white
-        "#991b1b", // darker red
+        "#dc2626", // red-600 - plus vif
+        "#16a34a", // green-600 - plus saturé
+        "#f5f5f5", // blanc cassé - plus visible
+        "#b91c1c", // red-700
+        "#15803d", // green-700
       ]}
-      backgroundFill="#111827"
+      backgroundFill="#0f172a"
       className="relative z-10"
       containerClassName="h-screen flex items-center justify-center"
     >
@@ -35,7 +36,7 @@ export default function HeroWaves() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="mb-6"
         >
-          <span className="px-5 py-2 bg-white/10 border border-white/20 text-white text-sm uppercase tracking-widest rounded-full backdrop-blur-lg">
+          <span className="px-5 py-2 bg-white/20 border border-white/30 text-white text-sm font-medium uppercase tracking-widest rounded-full backdrop-blur-xl shadow-lg">
             New 2025 Morocco Edition
           </span>
         </motion.div>
@@ -45,9 +46,9 @@ export default function HeroWaves() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="text-6xl md:text-7xl font-bold leading-tight text-white"
+          className="text-6xl md:text-7xl font-bold leading-tight text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]"
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-white to-green-400">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-green-500 filter drop-shadow-[0_2px_20px_rgba(220,38,38,0.5)]">
             Morocco Jerseys
           </span>
           <br />
@@ -73,7 +74,7 @@ export default function HeroWaves() {
           className="flex flex-col sm:flex-row gap-5 justify-center"
         >
           <button className="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-red-500/40 hover:shadow-xl">
-            <span className="relative z-10 flex items-center gap-2">
+            <span className="relative z-10 flex items-center gap-2 justify-center">
               <ShoppingBag className="w-5 h-5" />
               Shop Now
             </span>
