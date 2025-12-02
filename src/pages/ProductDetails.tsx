@@ -3,10 +3,10 @@
 "use client";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import {
   Truck, Shield, RotateCcw, Check, Star, Heart, Share2,
-  Package, Clock, Award, Banknote, MapPin, User, Phone, Mail,
+  Package, Award, Banknote, MapPin, User, Phone, Mail,
   ShoppingBag, Send, Trash2, Plus, Minus, ChevronLeft, ChevronRight, Zap
 } from "lucide-react";
 
@@ -23,22 +23,33 @@ interface OrderLine {
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
+  console.log( "iddd",id)
   const navigate = useNavigate();
 
-  // Récupère le produit réel par ID
-  const product = useMemo(() => {
-  const found = products.find(p => p.id === id);
-  if (!found) {
-    navigate("/404", { replace: true });
+  // === CORRECTION FINALE : Plus de flash blanc ni 404 ===
+// CORRECTION : on cherche le produit SANS utiliser la variable "product" dedans
+  const product = useMemo((): Product | null => {
+   
+
+    const found = products.find(p => p.id === id);
+    if (!found) {
+      navigate("/404", { replace: true });
+      return null;
+    }
+
+    return found;
+  }, [id, navigate]);
+
+  // Si produit non trouvé ou redirection en cours → rien à afficher
+  if (!product) {
     return null;
   }
-  return found;
-}, [id, navigate]);
 
-// Si redirection en cours, on affiche rien (évite le flash blanc)
-if (!product) {
-  return null;
-}
+  // Pendant la redirection → rien à afficher
+  if (!product) {
+    return null;
+  }
+  // === FIN DE LA CORRECTION ===
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -121,8 +132,7 @@ ${form.email || "—"}
 
 *Adresse de livraison*
 ${form.address}
-${form.city} ${form.postalCode ? form.postalCode : ""}
-${form.postalCode ? `Code postal : ${form.postalCode}` : ""}
+${form.city}${form.postalCode ? ` ${form.postalCode}` : ""}
 
 Paiement à la livraison (espèces)
 `.trim();
@@ -268,7 +278,7 @@ Paiement à la livraison (espèces)
             </div>
           </div>
 
-          {/* === COLONNE DROITE : FORMULAIRE COMPLET === */}
+          {/* === COLONNE DROITE : FORMULAIRE === */}
           <div className="flex flex-col space-y-6">
             <div className="bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-500/20 p-8">
               <div className="flex items-center gap-3 mb-4">
