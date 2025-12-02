@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import { ShoppingCart, Menu, X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,6 +18,7 @@ export default function Navbar() {
 
   const { items, getTotalItems, getTotalPrice, updateQuantity, removeFromCart } = useCart();
 
+  // Effet pour masquer/afficher la barre de navigation au défilement
   useEffect(() => {
     const handleScroll = () => {
       const current = window.scrollY;
@@ -30,13 +30,26 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  // Effet pour bloquer le défilement du corps (body) lorsque le menu ou le panier est ouvert
+  useEffect(() => {
+    if (isCartOpen || isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isCartOpen, isMenuOpen]);
+
   return (
     <>
       {/* NAVBAR */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: isVisible ? 0 : -150 }}
-        className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4"
       >
         <div className="w-full max-w-6xl bg-gradient-to-r from-red-700/95 to-red-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-green-400/30">
           <div className="flex items-center justify-between h-16 px-6">
@@ -45,10 +58,10 @@ export default function Navbar() {
               <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-green-600 rounded-xl flex items-center justify-center shadow-xl">
                 <span className="text-white text-2xl font-black">M</span>
               </div>
-              <h1 className="text-2xl font-bold text-white">Morocco Store</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Morocco Store</h1>
             </div>
 
-            {/* Desktop Menu */}
+            {/* Desktop Menu (Visible seulement sur grand écran) */}
             <div className="hidden lg:flex gap-10">
               {navItems.map(item => (
                 <a key={item.name} href={item.href} className="text-white font-medium hover:text-green-300 transition">
@@ -59,8 +72,9 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex items-center gap-4">
+              {/* Bouton Panier */}
               <button
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }}
                 className="relative p-3 hover:bg-white/20 rounded-xl transition"
               >
                 <ShoppingCart className="w-6 h-6 text-white" />
@@ -75,15 +89,68 @@ export default function Navbar() {
                 )}
               </button>
 
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-3 hover:bg-white/20 rounded-xl">
+              {/* Bouton Menu Mobile (Visible seulement sur petit écran) */}
+              <button 
+                onClick={() => { setIsMenuOpen(!isMenuOpen); setIsCartOpen(false); }} 
+                className="lg:hidden p-3 hover:bg-white/20 rounded-xl"
+              >
                 {isMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
               </button>
             </div>
           </div>
         </div>
       </motion.nav>
+      
+      {/* -------------------- MENU MOBILE SIDEBAR -------------------- */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90]"
+            />
 
-      {/* PANIER SIDEBAR */}
+            {/* Panneau du Menu - Largeur réduite à w-[70%] pour mobile */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed right-0 top-0 h-full w-[70%] max-w-sm bg-gradient-to-b from-red-800 to-red-900 z-[95] flex flex-col shadow-2xl lg:hidden"
+            >
+              <div className="p-6 border-b border-white/10 flex justify-end">
+                <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <X className="w-7 h-7 text-white" />
+                </button>
+              </div>
+
+              <div className="flex flex-col p-6 space-y-4">
+                {navItems.map(item => (
+                  <a 
+                    key={item.name} 
+                    href={item.href} 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-white text-2xl font-semibold p-4 hover:bg-red-700/50 rounded-xl transition block"
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+              
+              <div className="mt-auto p-6 text-center text-gray-300 border-t border-white/10">
+                <p>&copy; 2024 Morocco Store</p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+
+      {/* -------------------- PANIER SIDEBAR -------------------- */}
       <AnimatePresence>
         {isCartOpen && (
           <>
@@ -92,15 +159,16 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsCartOpen(false)}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[110]"
             />
 
+            {/* Panneau du Panier - Largeur ajustée à max-w-md pour mobile */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 h-full w-full max-w-lg bg-gradient-to-b from-gray-900 to-black z-50 flex flex-col shadow-2xl"
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-900 to-black z-[115] flex flex-col shadow-2xl"
             >
               <div className="p-6 border-b border-white/10 flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-white flex items-center gap-3">
@@ -126,7 +194,12 @@ export default function Navbar() {
                       className="bg-white/5 rounded-2xl p-5 border border-white/10"
                     >
                       <div className="flex gap-4">
-                        <img src={item.image_url} alt={item.name} className="w-24 h-24 object-cover rounded-xl" />
+                        {/* CORRECTION DE TYPE : Utilisation de item.image_urls[0] */}
+                        <img 
+                            src={item.image_urls[0]} 
+                            alt={item.name} 
+                            className="w-24 h-24 object-cover rounded-xl" 
+                        />
                         <div className="flex-1">
                           <h3 className="text-white font-bold text-lg">{item.name}</h3>
                           <p className="text-green-400">Taille: <strong>{item.selectedSize}</strong></p>
@@ -138,11 +211,11 @@ export default function Navbar() {
                       </div>
 
                       <div className="flex justify-between items-center mt-4">
-                        <div className="flex items-center bg-white/10 rounded-xl">
+                        <div className="flex items-center bg-white/10 rounded-xl text-white">
                           <button onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)} className="p-3 hover:bg-red-500/20 rounded-l-xl">
                             <Minus className="w-5 h-5" />
                           </button>
-                          <span className="w-12 text-center font-bold text-white">{item.quantity}</span>
+                          <span className="w-12 text-center font-bold">{item.quantity}</span>
                           <button onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)} className="p-3 hover:bg-green-500/20 rounded-r-xl">
                             <Plus className="w-5 h-5" />
                           </button>
