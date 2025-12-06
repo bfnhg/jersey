@@ -23,7 +23,9 @@ export default function CardJersey({ product }: { product: Product }) {
   };
 
   const handleView = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.preventDefault(); // Prevent default behavior
+    e.stopPropagation(); // Stop event propagation
+    console.log("Navigating to product:", product.id); // Debugging log
     navigate(`/product/${product.id}`);
   };
 
@@ -38,7 +40,11 @@ export default function CardJersey({ product }: { product: Product }) {
       {/* === DIV CLIQUABLE PRINCIPAL === */}
       <div
         className="group/card block cursor-pointer"
-        onClick={() => navigate(`/product/${product.id}`)}
+        onClick={(e) => {
+          e.preventDefault(); // Prevent default behavior
+          console.log("Main div clicked, navigating to:", product.id); // Debugging log
+          navigate(`/product/${product.id}`);
+        }}
       >
         <CardContainer containerClassName="py-8">
           <CardBody className="relative w-full max-w-[300px] h-[480px] bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-3xl border border-emerald-500/20 shadow-2xl hover:shadow-emerald-500/30 hover:border-emerald-500/40 transition-all duration-500 overflow-hidden">

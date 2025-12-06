@@ -1,5 +1,3 @@
-// src/pages/ProductDetails.tsx
-
 "use client";
 
 import { useParams, useNavigate } from "react-router-dom";
@@ -23,8 +21,20 @@ interface OrderLine {
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-  console.log( "iddd",id)
   const navigate = useNavigate();
+
+  // === TOUS LES HOOKS DÉCLARÉS EN PREMIER (TOUJOURS, SANS CONDITION) ===
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", email: "", phone: "",
+    address: "", city: "", postalCode: "", paymentMethod: "cash"
+  });
+  const [orderLines, setOrderLines] = useState<OrderLine[]>([]);
+  const [tempSize, setTempSize] = useState<string>("M");
+  const [tempQuantity, setTempQuantity] = useState<number>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // === RÉCUPÉRATION DU PRODUIT ===
   const product = useMemo((): Product | null => {
@@ -33,8 +43,21 @@ export default function ProductDetails() {
     return found || null;
   }, [id]);
 
-  // Si produit non trouvé → retour à l'accueil
+  // Calcul du total (doit être avant les conditions de retour)
+  const totalPrice = useMemo(() => {
+    if (!product) return 0;
+    return orderLines.reduce((sum, line) => sum + line.quantity * product.price, 0);
+  }, [orderLines, product]);
+
+  // === MAINTENANT LES CONDITIONS DE RETOUR (APRÈS TOUS LES HOOKS) ===
+  
+  // Si produit non trouvé
+  // Add debugging log for `id`
+  console.log("Product ID:", id);
+
+  // Improve error handling for missing product
   if (!product) {
+    console.error("Product not found for ID:", id);
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900/90 to-gray-950/90 text-white flex flex-col items-center justify-center">
         <div className="text-center space-y-6">
@@ -50,26 +73,6 @@ export default function ProductDetails() {
       </div>
     );
   }
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const [form, setForm] = useState({
-    firstName: "", lastName: "", email: "", phone: "",
-    address: "", city: "", postalCode: "", paymentMethod: "cash"
-  });
-
-  const [orderLines, setOrderLines] = useState<OrderLine[]>([]);
-  const [tempSize, setTempSize] = useState<string>("M");
-  const [tempQuantity, setTempQuantity] = useState<number>(1);
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-
-  // Calcul du total
-  const totalPrice = useMemo(() => {
-    return orderLines.reduce((sum, line) => sum + line.quantity * product.price, 0);
-  }, [orderLines, product.price]);
 
   // Gestion panier
   const handleAddLine = () => {
@@ -379,14 +382,14 @@ Paiement à la livraison (espèces)
                             <p className="text-xs text-gray-400">{line.quantity} × {product.price} MAD</p>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button onClick={() => handleUpdateQuantity(line.size, -1)} className="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600">
+                            <button onClick={() => handleUpdateQuantity(line.size, -1)} className="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center">
                               <Minus size={14} />
                             </button>
                             <span className="font-bold text-white w-6 text-center">{line.quantity}</span>
-                            <button onClick={() => handleUpdateQuantity(line.size, 1)} className="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600">
+                            <button onClick={() => handleUpdateQuantity(line.size, 1)} className="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center">
                               <Plus size={14} />
                             </button>
-                            <button onClick={() => handleRemoveLine(line.size)} className="w-8 h-8 rounded-full bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white ml-2">
+                            <button onClick={() => handleRemoveLine(line.size)} className="w-8 h-8 rounded-full bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white ml-2 flex items-center justify-center">
                               <Trash2 size={16} />
                             </button>
                           </div>
@@ -457,19 +460,6 @@ Paiement à la livraison (espèces)
                           value={form.city}
                           onChange={(e) => setForm({ ...form, city: e.target.value })}
                           required
-                          placeholder=" "
-                          className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"
-                        />
-                        <label className="absolute left-4 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">
-                          Ville
-                        </label>
-                      </div>
-
-                      <div className="relative">
-                        <input
-                          type="text"
-                          value={form.postalCode}
-                          onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
                           placeholder=" "
                           className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"
                         />
