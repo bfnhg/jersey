@@ -26,30 +26,30 @@ export default function ProductDetails() {
   console.log( "iddd",id)
   const navigate = useNavigate();
 
-  // === CORRECTION FINALE : Plus de flash blanc ni 404 ===
-// CORRECTION : on cherche le produit SANS utiliser la variable "product" dedans
+  // === RÉCUPÉRATION DU PRODUIT ===
   const product = useMemo((): Product | null => {
-   
-
+    if (!id) return null;
     const found = products.find(p => p.id === id);
-    if (!found) {
-      navigate("/404", { replace: true });
-      return null;
-    }
+    return found || null;
+  }, [id]);
 
-    return found;
-  }, [id, navigate]);
-
-  // Si produit non trouvé ou redirection en cours → rien à afficher
+  // Si produit non trouvé → retour à l'accueil
   if (!product) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900/90 to-gray-950/90 text-white flex flex-col items-center justify-center">
+        <div className="text-center space-y-6">
+          <h1 className="text-5xl font-black">Produit introuvable</h1>
+          <p className="text-xl text-gray-400">Ce produit n'existe pas ou a été retiré.</p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-8 px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-bold hover:from-emerald-500 hover:to-teal-500 transition"
+          >
+            Retour à l'accueil
+          </button>
+        </div>
+      </div>
+    );
   }
-
-  // Pendant la redirection → rien à afficher
-  if (!product) {
-    return null;
-  }
-  // === FIN DE LA CORRECTION ===
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

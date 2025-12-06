@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 
 import Home from './Home'
 import ProductDetails from './pages/ProductDetails'
-import Checkout from './pages/Checkout' // si tu l'as
+// import Checkout from './pages/Checkout' // si tu l'as
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/checkout" element={<Checkout />} />
+        {/* <Route path="/checkout" element={<Checkout />} /> */}
         {/* autres routes */}
       </Routes>
     </CartProvider>
