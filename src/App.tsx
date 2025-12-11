@@ -1,23 +1,20 @@
-// src/App.tsx
-import React from 'react'
-import { CartProvider } from './context/CartContext'
-import { Routes, Route } from 'react-router-dom'
+// src/App.tsx → Version finale propre
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Home from './Home'
-import ProductDetails from './pages/ProductDetails'
-// import Checkout from './pages/Checkout' // si tu l'as
+import Home from "./Home";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
-    <CartProvider>
+    <div className="min-h-screen bg-gray-950 text-white">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         {/* <Route path="/checkout" element={<Checkout />} /> */}
-        {/* autres routes */}
       </Routes>
-    </CartProvider>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

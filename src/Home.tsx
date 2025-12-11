@@ -5,18 +5,24 @@ import Features from './components/Features';
 import Footer from './components/Footer';
 import CardJersey from './components/CardJersey';
 import { products } from './data/products';
+import { testimonials } from "./data/testimonials"; // Import propre !
 import { useCart } from './context/CartContext';
 import { Link } from 'react-router-dom';
+import { AnimatedTestimonials } from "./components/ui/AnimatedTestimonials";
+// import NewsletterSection from './components/NewsletterSection';
+
 
 function Home() {
   const { getTotalItems } = useCart();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
-      <Navbar cartItemCount={getTotalItems()} />
+      <Navbar  />
 
       <main>
         <HeroWaves />
+        
+                <Features />
 
         {/* Section produits */}
         <section className="py-20">
@@ -38,8 +44,13 @@ function Home() {
             </div>
           </div>
         </section>
+                <Features />
 
-        <Features />
+        <section className="py-32 bg-gradient-to-b from-gray-950 to-black">
+        <AnimatedTestimonials testimonials={testimonials} autoplay={true} />
+      </section>
+       
+
       </main>
 
       <Footer />

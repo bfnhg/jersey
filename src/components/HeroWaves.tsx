@@ -10,15 +10,15 @@ export default function HeroWaves() {
       waveWidth={50}
       blur={2}
       speed="fast"
-      waveOpacity={0.7}
+      waveOpacity={0.3}
       colors={[
-        "#dc2626", // red-600 - plus vif
-        "#16a34a", // green-600 - plus saturé
-        "#f5f5f5", // blanc cassé - plus visible
-        "#b91c1c", // red-700
-        "#15803d", // green-700
+        // "#dc2626", // red-600 - Rouge du drapeau
+        // "#16a34a", // green-600 - Vert du drapeau
+        "#ffffff", // white - Blanc pur
+        "#b91c1c", // red-700 - Rouge foncé
+        "#15803d", // green-700 - Vert foncé
       ]}
-      backgroundFill="#0f172a"
+      backgroundFill="#000000"
       className="relative z-10"
       containerClassName="h-screen flex items-center justify-center"
     >
@@ -36,7 +36,7 @@ export default function HeroWaves() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="mb-6"
         >
-          <span className="px-5 py-2 bg-white/20 border border-white/30 text-white text-sm font-medium uppercase tracking-widest rounded-full backdrop-blur-xl shadow-lg">
+          <span className="px-5 py-2 bg-white/10 border border-white/20 text-white text-sm font-medium uppercase tracking-widest rounded-full backdrop-blur-xl shadow-lg">
             New 2025 Morocco Edition
           </span>
         </motion.div>
