@@ -1,4 +1,3 @@
-// src/components/ui/AnimatedTestimonialsV4.tsx
 "use client";
 
 import { IconArrowLeft, IconArrowRight, IconMessageCircle } from "@tabler/icons-react";

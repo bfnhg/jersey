@@ -20,12 +20,14 @@ function Home() {
       <Navbar  />
 
       <main>
-        <HeroWaves />
-        
-                <Features />
+        <section id="home">
+          <HeroWaves />
+        </section>
+
+        {/* <Features /> */}
 
         {/* Section produits */}
-        <section className="py-20">
+        <section id="products" className="py-20">
           <div className="max-w-7xl mx-auto px-6">
             <h2 className="text-5xl md:text-6xl font-black text-white text-center mb-16 tracking-tight">
               COLLECTION OFFICIELLE 2024/25
@@ -44,11 +46,12 @@ function Home() {
             </div>
           </div>
         </section>
-                <Features />
-
-        <section className="py-32 bg-gradient-to-b from-gray-950 to-black">
-        <AnimatedTestimonials testimonials={testimonials} autoplay={true} />
-      </section>
+        <section id="features">
+          <Features />
+        </section>
+        <section id="testimonials" className="py-32 bg-gradient-to-b from-gray-950 to-black">
+          <AnimatedTestimonials testimonials={testimonials} />
+        </section>
        
 
       </main>

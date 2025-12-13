@@ -4,16 +4,19 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
 import ProductDetails from "./pages/ProductDetails";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        {/* <Route path="/checkout" element={<Checkout />} /> */}
-      </Routes>
-    </div>
+    <CartProvider>
+      <div className="min-h-screen bg-gray-950 text-white">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          {/* <Route path="/checkout" element={<Checkout />} /> */}
+        </Routes>
+      </div>
+    </CartProvider>
   );
 }
 
