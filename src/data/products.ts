@@ -15,7 +15,7 @@ export const products: Product[] = [
     name: "Maillot Domicile Maroc 2024/25",
     price: 899,
     image_url:"",
-    image_urls: ["/img1_detail.png","/img1.jpeg", "/img1_dos.png"], // <-- Ajout de plusieurs URLs (simulées)
+    image_urls: ["/img1_detail.webp","/img1.webp", "/img1_dos.webp"], // <-- Ajout de plusieurs URLs (simulées)
     category: "Domicile",
     is_new: true,
     description: "Maillot officiel domicile Maroc 2024/25 – Tissu respirant Dri-FIT, design premium avec étoile brodée."
@@ -25,7 +25,7 @@ export const products: Product[] = [
     name: "Maillot Extérieur Maroc 2024",
     price: 849,
      image_url:"",
-    image_urls: [ "/mailloexterier_detail.png","/mailloexterier.jpg","/mailloexterier_dos.png"], // <-- Ajout de plusieurs URLs (simulées)
+    image_urls: [ "/mailloexterier_detail.webp","/mailloexterier.webp","/mailloexterier_dos.webp"], // <-- Ajout de plusieurs URLs (simulées)
     category: "Extérieur",
     is_new: true,
     description: "Maillot extérieur blanc élégant – Coupe slim, logo Puma et fédération brodés."
@@ -36,7 +36,7 @@ export const products: Product[] = [
     name: "Survêtement Officiel Maroc 2024",
     price: 1399,
      image_url:"",
-    image_urls: ["/survetement.jpg"],
+    image_urls: ["/survetement.webp"],
     category: "Training",
     is_new: true,
     description: "Ensemble veste + pantalon – Idéal entraînement ou streetwear."
@@ -46,7 +46,7 @@ export const products: Product[] = [
     name: "Écharpe Supporter Maroc",
     price: 199,
      image_url:"",
-    image_urls: ["/echarpe.png"],
+    image_urls: ["/echarpe.webp"],
     category: "Accessoires",
     is_new: false,
     description: "Écharpe officielle 100% acrylique – Allez les Lions !"

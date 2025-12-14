@@ -2,17 +2,11 @@ import { useState, useEffect, useRef, ImgHTMLAttributes } from 'react';
 import { cn } from '../lib/utils';
 
 interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
-  // Image source (peut être une string ou un array pour srcset)
   src: string;
-  // Alternative WebP source
   srcWebp?: string;
-  // Sizes pour responsif
   sizes?: string;
-  // Placeholder pendant le chargement
   placeholder?: string;
-  // Classe du blur pendant le chargement
   blurClassName?: string;
-  // Callback quand l'image est chargée
   onImageLoad?: () => void;
 }
 
@@ -59,20 +53,6 @@ export function OptimizedImage({
     setError(true);
   };
 
-  // Construction du srcset pour les images responsives
-  // Augmente la qualité basée sur le ratio de pixel du device
-  const getSrcSet = (imageSrc: string): string => {
-    const extension = imageSrc.split('.').pop();
-    if (!extension) return imageSrc;
-
-    // Génère les variantes pour différentes densités
-    const baseName = imageSrc.substring(0, imageSrc.lastIndexOf('.'));
-    return `
-      ${baseName}.${extension} 1x,
-      ${baseName}@2x.${extension} 2x
-    `.trim();
-  };
-
   if (error) {
     return (
       <div className={cn("bg-gray-200 flex items-center justify-center", className)}>
@@ -81,47 +61,51 @@ export function OptimizedImage({
     );
   }
 
-  return (
-    <picture>
-      {/* WebP pour les navigateurs modernes */}
-      {srcWebp && (
-        <source
-          srcSet={getSrcSet(srcWebp)}
-          type="image/webp"
-          sizes={sizes}
+  // Si WebP est fourni, utiliser picture + source pour fallback
+  if (srcWebp) {
+    return (
+      <picture>
+        <source srcSet={srcWebp} type="image/webp" sizes={sizes} />
+        <source srcSet={src} sizes={sizes} />
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          className={cn(
+            'transition-all duration-500',
+            !isLoaded && blurClassName,
+            isLoaded && 'blur-0',
+            className
+          )}
+          onLoad={handleLoad}
+          onError={handleError}
+          {...props}
         />
+      </picture>
+    );
+  }
+
+  // Sinon, simple img tag
+  return (
+    <img
+      ref={imgRef}
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      sizes={sizes}
+      className={cn(
+        'transition-all duration-500',
+        !isLoaded && blurClassName,
+        isLoaded && 'blur-0',
+        className
       )}
-      
-      {/* Fallback vers le format original */}
-      <source
-        srcSet={getSrcSet(src)}
-        sizes={sizes}
-      />
-      
-      {/* Image avec lazy loading natif */}
-      <img
-        ref={imgRef}
-        src={placeholder}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        className={cn(
-          'transition-all duration-500',
-          !isLoaded && blurClassName,
-          isLoaded && 'blur-0',
-          className
-        )}
-        style={{
-          backgroundImage: `url(${placeholder})`,
-          backgroundSize: 'cover',
-          ...style
-        }}
-        onLoad={handleLoad}
-        onError={handleError}
-        data-src={src}
-        {...props}
-      />
-    </picture>
+      onLoad={handleLoad}
+      onError={handleError}
+      {...props}
+    />
   );
 }
 
