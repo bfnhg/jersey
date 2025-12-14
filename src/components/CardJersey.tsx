@@ -1,4 +1,3 @@
-// src/components/card/CardJersey.tsx
 "use client";
 
 import { CardContainer, CardBody, CardItem } from "./ui/3d-card";
@@ -6,8 +5,9 @@ import { Product } from "../data/products";
 import { ShoppingBag, Eye, Sparkles, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { OptimizedImage } from "./OptimizedImage";
 
 export default function CardJersey({ product }: { product: Product }) {
   const navigate = useNavigate();
@@ -15,27 +15,26 @@ export default function CardJersey({ product }: { product: Product }) {
   const [showToast, setShowToast] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, "M", 1);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
-  };
+  }, [product, addToCart]);
 
-  const handleView = (e: React.MouseEvent) => {
+  const handleView = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/product/${product.id}`);
-  };
+  }, [navigate, product.id]);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
     const newIndex = Math.round(container.scrollLeft / container.clientWidth);
     setActiveIndex(Math.min(newIndex, product.image_urls.length - 1));
-  };
+  }, [product.image_urls.length]);
 
-  // Empêche tout clic sur la carte entière (sauf les boutons)
   const preventCardClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -43,16 +42,12 @@ export default function CardJersey({ product }: { product: Product }) {
 
   return (
     <div className="relative">
-      <CardContainer
-        containerClassName="py-8"
-        className="cursor-default select-none" // Désactive le pointeur main
-      >
+      <CardContainer containerClassName="py-8" className="cursor-default select-none">
         <CardBody
           className="relative w-full max-w-[300px] h-[480px] bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-3xl border border-emerald-500/20 shadow-2xl hover:shadow-emerald-500/30 hover:border-emerald-500/40 transition-all duration-500 overflow-hidden"
-          onClick={preventCardClick} // Bloque TOUT clic sur la carte
+          onClick={preventCardClick}
         >
           <div className="h-full flex flex-col relative">
-            {/* Badge NEW */}
             {product.is_new && (
               <div className="absolute top-4 right-4 z-50 pointer-events-none">
                 <div className="bg-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse">
@@ -62,7 +57,6 @@ export default function CardJersey({ product }: { product: Product }) {
               </div>
             )}
 
-            {/* Carrousel d'images */}
             <CardItem translateZ={60} className="w-full h-[260px] relative">
               <div
                 className="w-full h-full flex overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide rounded-t-3xl"
@@ -70,11 +64,13 @@ export default function CardJersey({ product }: { product: Product }) {
                 onScroll={handleScroll}
               >
                 {product.image_urls.map((url, index) => (
-                  <img
+                  <OptimizedImage
                     key={index}
                     src={url}
                     alt={`${product.name} - vue ${index + 1}`}
                     className="flex-none w-full h-full object-cover object-top snap-center"
+                    sizes="300px"
+                    loading={index === 0 ? "eager" : "lazy"}
                     draggable={false}
                   />
                 ))}
@@ -82,7 +78,6 @@ export default function CardJersey({ product }: { product: Product }) {
 
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent pointer-events-none" />
 
-              {/* Dots de pagination */}
               {product.image_urls.length > 1 && (
                 <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10 pointer-events-none">
                   {product.image_urls.map((_, index) => (
@@ -99,7 +94,6 @@ export default function CardJersey({ product }: { product: Product }) {
               )}
             </CardItem>
 
-            {/* Infos produit */}
             <div className="flex-1 px-5 py-4 text-center">
               <CardItem translateZ={30}>
                 <h3 className="text-white text-lg font-bold line-clamp-2">
@@ -119,7 +113,6 @@ export default function CardJersey({ product }: { product: Product }) {
               </CardItem>
             </div>
 
-            {/* Boutons - SEULS endroits cliquables */}
             <div className="absolute inset-x-4 bottom-4 flex gap-3 z-50">
               <button
                 onClick={handleAddToCart}
@@ -143,7 +136,6 @@ export default function CardJersey({ product }: { product: Product }) {
         </CardBody>
       </CardContainer>
 
-      {/* Toast d'ajout au panier */}
       <AnimatePresence>
         {showToast && (
           <motion.div

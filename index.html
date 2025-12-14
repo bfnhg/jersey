@@ -1,16 +1,121 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
+    <!-- Meta tags essentiels -->
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Morocco E-commerce Site</title>
-    <!-- <meta property="og:image" content="https://bolt.new/static/og_default.png"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
+    <!-- SEO Principal -->
+    <title>Jersey Shop - Maillots Officiels Maroc | Qualité Premium</title>
+    <meta name="description" content="Découvrez notre collection exclusive de maillots officiels Maroc 2024/25. Qualité premium, livraison rapide à travers le Maroc. Maillots domicile, extérieur et accessoires.">
+    <meta name="keywords" content="maillot Maroc, jersey officiel, maillot domicile, maillot extérieur, équipe nationale Maroc">
+    <meta name="author" content="Jersey Shop Morocco">
+    <meta name="language" content="French">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Canonical URL (remplacer par votre domaine) -->
+    <link rel="canonical" href="https://yoursite.com/">
+    
+    <!-- Open Graph pour les partages réseaux sociaux -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jersey Shop - Maillots Officiels Maroc">
+    <meta property="og:description" content="Collection exclusive de maillots officiels Maroc de qualité premium. Livraison rapide au Maroc.">
+    <meta property="og:image" content="https://yoursite.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://yoursite.com">
+    <meta property="og:site_name" content="Jersey Shop">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
-</head>
+    <meta name="twitter:title" content="Jersey Shop - Maillots Officiels Maroc">
+    <meta name="twitter:description" content="Découvrez nos maillots officiels Maroc de qualité premium">
+    <meta name="twitter:image" content="https://yoursite.com/og-image.jpg">
+    <meta name="twitter:creator" content="@yourhandle">
+    
+    <!-- Mobile optimisation -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Jersey Shop">
+    <meta name="theme-color" content="#1f2937">
+    
+    <!-- Preload et prefetch essentiels -->
+    <link rel="preload" href="/src/main.tsx" as="script">
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="prefetch" href="/img1.jpeg" as="image">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Sitemap et RSS -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Organization",
+      "name": "Jersey Shop",
+      "url": "https://yoursite.com",
+      "logo": "https://yoursite.com/logo.png",
+      "description": "Collection exclusive de maillots officiels Maroc",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+212624831624",
+        "contactType": "Customer Service"
+      },
+      "sameAs": [
+        "https://www.facebook.com/yourpage",
+        "https://www.instagram.com/yourhandle",
+        "https://www.twitter.com/yourhandle"
+      ]
+    }
+    </script>
+
+    <!-- Optimization des performances -->
+    <style>
+      /* Prevent layout shift */
+      img { max-width: 100%; height: auto; }
+      
+      /* Critical styles inline */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #111827;
+        color: #ffffff;
+      }
+      
+      #root {
+        width: 100%;
+        min-height: 100vh;
+      }
+    </style>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Analytics (à remplacer par votre code) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
   </body>
 </html>
