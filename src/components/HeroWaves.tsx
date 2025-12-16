@@ -1,10 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShoppingBag } from "lucide-react";
-import {WavyBackground} from "./ui/wavy-background"; // adjust the path
+import { ShoppingBag ,MessageCircle} from "lucide-react";
+import { WavyBackground } from "./ui/wavy-background";
 
 export default function HeroWaves() {
+  const handleScrollToProducts = () => {
+    document
+      .getElementById("products")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleWhatsAppContact = () => {
+    // Remplace ce numéro par le tien (format international sans + ni espaces)
+    const phoneNumber = "212624831624"; // ← Mets ton numéro marocain ici, ex: 212661234567
+    const message = encodeURIComponent("Bonjour ! Je suis intéressé par vos maillots Maroc 2025 🇲🇦");
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+  };
   return (
     <WavyBackground
       waveWidth={50}
@@ -12,11 +25,9 @@ export default function HeroWaves() {
       speed="fast"
       waveOpacity={0.3}
       colors={[
-        // "#dc2626", // red-600 - Rouge du drapeau
-        // "#16a34a", // green-600 - Vert du drapeau
-        "#ffffff", // white - Blanc pur
-        "#b91c1c", // red-700 - Rouge foncé
-        "#15803d", // green-700 - Vert foncé
+        "#ffffff",
+        "#b91c1c", // red-700
+        "#15803d", // green-700
       ]}
       backgroundFill="#000000"
       className="relative z-10"
@@ -48,7 +59,7 @@ export default function HeroWaves() {
           transition={{ delay: 0.4, duration: 1 }}
           className="text-6xl md:text-7xl font-bold leading-tight text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]"
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-green-500 filter drop-shadow-[0_2px_20px_rgba(220,38,38,0.5)]">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-green-500 drop-shadow-[0_2px_20px_rgba(220,38,38,0.5)]">
             Morocco Jerseys
           </span>
           <br />
@@ -73,17 +84,36 @@ export default function HeroWaves() {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-5 justify-center"
         >
-          <button className="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-red-500/40 hover:shadow-xl">
+          {/* Bouton principal : Shop Now */}
+          <button
+            onClick={handleScrollToProducts}
+            className="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-red-600/50 hover:scale-105"
+          >
             <span className="relative z-10 flex items-center gap-2 justify-center">
               <ShoppingBag className="w-5 h-5" />
               Shop Now
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
           </button>
 
-          <button className="px-8 py-4 border border-white/30 text-white rounded-lg hover:bg-white/10 transition">
-            Explore Collection
-          </button>
+          {/* Bouton secondaire */}
+         {/* Bouton secondaire : Contact WhatsApp → Hover en ROUGE */}
+{/* Bouton WhatsApp : Vert → Rouge au hover, icône toujours visible */}
+<button
+  onClick={handleWhatsAppContact}
+  className="group relative px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-red-600/50 hover:scale-105 flex items-center justify-center gap-3"
+>
+  {/* Icône WhatsApp - toujours blanche et bien visible */}
+  <MessageCircle className="w-6 h-6 text-white z-10" />
+
+  <span className="relative z-10">Contactez-nous sur WhatsApp</span>
+
+  {/* Couche qui passe en ROUGE au hover */}
+  <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+
+  {/* Effet de brillance qui traverse au hover */}
+  <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+</button>
         </motion.div>
 
         {/* Stats */}

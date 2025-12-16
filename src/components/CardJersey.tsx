@@ -20,7 +20,7 @@ export default function CardJersey({ product }: { product: Product }) {
     e.stopPropagation();
     addToCart(product, "M", 1);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
+    setTimeout(() => setShowToast(false), 1000);
   }, [product, addToCart]);
 
   const handleView = useCallback((e: React.MouseEvent) => {
@@ -137,32 +137,32 @@ export default function CardJersey({ product }: { product: Product }) {
       </CardContainer>
 
       <AnimatePresence>
-        {showToast && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full mb-4 z-[60] flex items-center gap-3 p-3 rounded-xl shadow-2xl backdrop-blur-md border border-emerald-500/30 bg-gray-900/95 w-[calc(100%-2rem)] max-w-[268px] pointer-events-none"
-          >
-            <div className="bg-emerald-500/20 p-2 rounded-full text-emerald-400 flex-shrink-0">
-              <Check size={18} strokeWidth={3} />
-            </div>
-            <div className="flex flex-col flex-1 min-w-0">
-              <h4 className="text-white font-bold text-xs">Ajouté au panier !</h4>
-              <p className="text-gray-400 text-[10px] mt-0.5 line-clamp-1">
-                {product.name}
-              </p>
-            </div>
-            <motion.div
-              initial={{ width: "100%" }}
-              animate={{ width: "0%" }}
-              transition={{ duration: 2.5, ease: "linear" }}
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full origin-left"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+  {showToast && (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 30, scale: 0.9 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="absolute inset-x-4 bottom-20 z-[60] flex items-center gap-3 p-4 rounded-2xl shadow-2xl backdrop-blur-xl border border-emerald-500/40 bg-gray-900/95 pointer-events-none"
+    >
+      <div className="bg-emerald-500/20 p-2.5 rounded-full text-emerald-400 flex-shrink-0">
+        <Check size={20} strokeWidth={3} />
+      </div>
+      <div className="flex flex-col flex-1 min-w-0">
+        <h4 className="text-white font-bold text-sm">Ajouté au panier !</h4>
+        <p className="text-gray-400 text-xs mt-0.5 line-clamp-1">
+          {product.name}
+        </p>
+      </div>
+      <motion.div
+        initial={{ width: "100%" }}
+        animate={{ width: "0%" }}
+        transition={{ duration: 1, ease: "linear" }}
+        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full origin-left"
+      />
+    </motion.div>
+  )}
+</AnimatePresence>
     </div>
   );
 }

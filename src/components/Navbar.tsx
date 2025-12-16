@@ -6,8 +6,9 @@ import { useCart } from '../context/CartContext';
 
 const navItems = [
   { name: 'Home', href: '#home' },
-  { name: 'Features', href: '#features' },
+  
   { name: 'Products', href: '#products' },
+  { name: 'Features', href: '#features' },
   { name: 'Testimonials', href: '#testimonials' },
   { name: 'Contact', href: '#contact' },
 ];
@@ -118,9 +119,9 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-900 to-black z-[115] flex flex-col shadow-2xl"
+              className="fixed right-0 top-0 h-screen w-full max-w-md bg-gradient-to-b from-gray-900 to-black z-[115] flex flex-col shadow-2xl overflow-hidden"
             >
-              {/* Header */}
+              {/* Header - Fixed */}
               <div className="p-6 border-b border-white/10 flex justify-between items-center shrink-0">
                 <h2 className="text-2xl font-bold text-white flex items-center gap-3">
                   <ShoppingCart className="text-green-400" />
@@ -131,8 +132,8 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Liste + Total (tout dans la zone scrollable) */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-5">
+              {/* Contenu Scrollable */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-thin scrollbar-thumb-red-600 scrollbar-track-gray-800">
                 {items.length === 0 ? (
                   <div className="text-center py-20">
                     <ShoppingCart className="w-20 h-20 text-gray-600 mx-auto mb-6" />
@@ -143,7 +144,13 @@ export default function Navbar() {
                     {items.map(item => (
                       <motion.div key={`${item.id}-${item.selectedSize}`} layout className="bg-white/5 rounded-2xl p-5 border border-white/10">
                         <div className="flex gap-4">
-                          <img src={item.image_urls[0]} alt={item.name} className="w-24 h-24 object-cover rounded-xl shadow-md" />
+                          <img 
+                            src={item.image_urls?.[0] || '/placeholder.webp'} 
+                            alt={item.name} 
+                            className="w-24 h-24 object-cover rounded-xl shadow-md" 
+                            loading="lazy"
+                            onError={(e) => { e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23666" width="100" height="100"/%3E%3C/svg%3E'; }}
+                          />
                           <div className="flex-1">
                             <h3 className="text-white font-bold text-lg">{item.name}</h3>
                             <p className="text-green-400 mt-1">Taille: <strong>{item.selectedSize}</strong></p>
@@ -169,33 +176,35 @@ export default function Navbar() {
                         </div>
                       </motion.div>
                     ))}
-
-                    {/* TOTAL + BOUTON – TAILLE NORMALE ET ÉLÉGANTE */}
-                    <div className="mt-10 pt-6 border-t border-white/20">
-                      <div className="flex justify-between items-center mb-6">
-                        <span className="text-xl font-bold text-white">Total</span>
-                        <span className="text-2xl font-bold text-green-400">
-                          {getTotalPrice().toLocaleString()} MAD
-                        </span>
-                      </div>
-
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full bg-gradient-to-r from-red-600 to-green-600 hover:from-red-500 hover:to-green-500 
-                                   text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300"
-                        onClick={() => alert('Redirection vers le paiement...')}
-                      >
-                        Passer la commande
-                      </motion.button>
-
-                      <p className="text-center text-gray-400 text-sm mt-4">
-                        Livraison rapide partout au Maroc 🇲🇦
-                      </p>
-                    </div>
                   </>
                 )}
               </div>
+
+              {/* Footer - Fixed au bas */}
+              {items.length > 0 && (
+                <div className="shrink-0 mt-auto p-6 border-t border-white/20 bg-gradient-to-b from-gray-900/50 to-black/80">
+                  <div className="flex justify-between items-center mb-6">
+                    <span className="text-xl font-bold text-white">Total</span>
+                    <span className="text-2xl font-bold text-green-400">
+                      {getTotalPrice().toLocaleString()} MAD
+                    </span>
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-gradient-to-r from-red-600 to-green-600 hover:from-red-500 hover:to-green-500 
+                               text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300"
+                    onClick={() => alert('Redirection vers le paiement...')}
+                  >
+                    Passer la commande
+                  </motion.button>
+
+                  <p className="text-center text-gray-400 text-sm mt-4">
+                    Livraison rapide partout au Maroc 🇲🇦
+                  </p>
+                </div>
+              )}
             </motion.div>
           </>
         )}
