@@ -31,8 +31,7 @@ export default function HeroWaves() {
       ]}
       backgroundFill="#000000"
       className="relative z-10"
-      containerClassName="h-screen flex items-center justify-center"
-    >
+containerClassName="min-h-screen flex items-center justify-center pt-32 pb-10 sm:pt-0"    >
       {/* CONTENT */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -57,13 +56,13 @@ export default function HeroWaves() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="text-6xl md:text-7xl font-bold leading-tight text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+          className="text-4xl md:text-7xl font-bold leading-tight text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]"
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-green-500 drop-shadow-[0_2px_20px_rgba(220,38,38,0.5)]">
             Morocco Jerseys
           </span>
           <br />
-          <span className="text-5xl md:text-6xl">Limited Edition Store</span>
+          <span className="text-5xl md:text-4xl">Limited Edition Store</span>
         </motion.h1>
 
         {/* Description */}

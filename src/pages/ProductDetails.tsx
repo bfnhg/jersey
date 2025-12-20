@@ -405,71 +405,166 @@ Paiement à la livraison (espèces)
                     <User className="w-5 h-5 text-emerald-400" />
                     Informations personnelles <span className="text-red-400 text-xs ml-2">(Obligatoire)</span>
                   </h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
-                      <input type="text" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} required placeholder=" " className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"/>
-                      <label className="absolute left-4 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">Prénom</label>
-                    </div>
-                    <div className="relative">
-                      <input type="text" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} required placeholder=" " className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"/>
-                      <label className="absolute left-4 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">Nom</label>
-                    </div>
-                  </div>
+                 {/* Exemple pour un input simple (Prénom, Nom, etc.) */}
+<div className="grid grid-cols-2 gap-4">
+  {/* Prénom */}
+  <div className="relative">
+    <input
+      type="text"
+      value={form.firstName}
+      onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+      required
+      placeholder=" "
+      className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 
+                 bg-black/30 backdrop-blur-md text-white 
+                 placeholder-transparent 
+                 focus:border-emerald-500 focus:outline-none 
+                 focus:ring-4 focus:ring-emerald-500/20 
+                 focus:bg-black/50 
+                 transition-all duration-300"
+    />
+    <label className="absolute left-4 top-1/2 -translate-y-1/2 
+                      pointer-events-none 
+                      transition-all duration-300 
+                      text-gray-400 peer-focus:text-emerald-400 
+                      font-bold text-sm 
+                      peer-focus:top-2 peer-focus:text-xs 
+                      peer-[:not(:placeholder-shown)]:top-2 
+                      peer-[:not(:placeholder-shown)]:text-xs 
+                      bg-gradient-to-t from-transparent via-gray-950/80 to-transparent 
+                      px-2">
+      Prénom
+    </label>
+  </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 z-10" />
-                      <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder=" " className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"/>
-                      <label className="absolute left-12 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:left-4 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:left-4 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">Email (facultatif)</label>
-                    </div>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 z-10" />
-                      <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required placeholder=" " className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"/>
-                      <label className="absolute left-12 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:left-4 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:left-4 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">Téléphone</label>
-                    </div>
-                  </div>
+  {/* Nom */}
+  <div className="relative">
+    <input
+      type="text"
+      value={form.lastName}
+      onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+      required
+      placeholder=" "
+      className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 
+                 bg-black/30 backdrop-blur-md text-white 
+                 placeholder-transparent 
+                 focus:border-emerald-500 focus:outline-none 
+                 focus:ring-4 focus:ring-emerald-500/20 
+                 focus:bg-black/50 
+                 transition-all duration-300"
+    />
+    <label className="absolute left-4 top-1/2 -translate-y-1/2 
+                      pointer-events-none 
+                      transition-all duration-300 
+                      text-gray-400 peer-focus:text-emerald-400 
+                      font-bold text-sm 
+                      peer-focus:top-2 peer-focus:text-xs 
+                      peer-[:not(:placeholder-shown)]:top-2 
+                      peer-[:not(:placeholder-shown)]:text-xs 
+                      bg-gradient-to-t from-transparent via-gray-950/80 to-transparent 
+                      px-2">
+      Nom
+    </label>
+  </div>
+</div>
+
+                 <div className="grid grid-cols-2 gap-4 mt-4">
+  {/* Email (facultatif) */}
+  <div className="relative">
+    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 transition-colors z-10" />
+    <input
+      type="email"
+      value={form.email}
+      onChange={(e) => setForm({ ...form, email: e.target.value })}
+      placeholder=" "
+      className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 
+                 bg-black/30 backdrop-blur-md text-white 
+                 placeholder-transparent 
+                 focus:border-emerald-500 focus:outline-none 
+                 focus:ring-4 focus:ring-emerald-500/20 
+                 focus:bg-black/50 
+                 transition-all duration-300"
+    />
+    <label className="absolute left-12 top-1/2 -translate-y-1/2 
+                      pointer-events-none 
+                      transition-all duration-300 
+                      text-gray-400 peer-focus:text-emerald-400 
+                      font-bold text-sm 
+                      peer-focus:top-2 peer-focus:left-4 peer-focus:text-xs 
+                      peer-[:not(:placeholder-shown)]:top-2 
+                      peer-[:not(:placeholder-shown)]:left-4 
+                      peer-[:not(:placeholder-shown)]:text-xs 
+                      bg-gradient-to-t from-transparent via-gray-950/80 to-transparent 
+                      px-2">
+      Email (facultatif)
+    </label>
+  </div>
+
+  {/* Téléphone */}
+  <div className="relative">
+    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 transition-colors z-10" />
+    <input
+      type="tel"
+      value={form.phone}
+      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+      required
+      placeholder=" "
+      className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 
+                 bg-black/30 backdrop-blur-md text-white 
+                 placeholder-transparent 
+                 focus:border-emerald-500 focus:outline-none 
+                 focus:ring-4 focus:ring-emerald-500/20 
+                 focus:bg-black/50 
+                 transition-all duration-300"
+    />
+    <label className="absolute left-12 top-1/2 -translate-y-1/2 
+                      pointer-events-none 
+                      transition-all duration-300 
+                      text-gray-400 peer-focus:text-emerald-400 
+                      font-bold text-sm 
+                      peer-focus:top-2 peer-focus:left-4 peer-focus:text-xs 
+                      peer-[:not(:placeholder-shown)]:top-2 
+                      peer-[:not(:placeholder-shown)]:left-4 
+                      peer-[:not(:placeholder-shown)]:text-xs 
+                      bg-gradient-to-t from-transparent via-gray-950/80 to-transparent 
+                      px-2">
+      Téléphone
+    </label>
+  </div>
+</div>
                 </div>
 
                 {/* Adresse de livraison */}
-                <div className="border-t-2 border-gray-800 pt-6">
-                  <h4 className="text-lg font-black text-white mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-emerald-400" />
-                    Adresse de livraison <span className="text-red-400 text-xs ml-2">(Obligatoire)</span>
-                  </h4>
-
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 z-10" />
-                      <input
-                        type="text"
-                        value={form.address}
-                        onChange={(e) => setForm({ ...form, address: e.target.value })}
-                        required
-                        placeholder=" "
-                        className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"
-                      />
-                      <label className="absolute left-12 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:left-4 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:left-4 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">
-                        Adresse complète (rue, quartier, immeuble...)
-                      </label>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          value={form.city}
-                          onChange={(e) => setForm({ ...form, city: e.target.value })}
-                          required
-                          placeholder=" "
-                          className="peer w-full px-4 py-3.5 rounded-xl border-2 border-gray-700 bg-gray-800 text-white placeholder-transparent focus:border-emerald-500 focus:outline-none focus:bg-gray-900 focus:shadow-lg transition-all duration-300"
-                        />
-                        <label className="absolute left-4 top-1/2 -translate-y-1/2 peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs transition-all duration-300 text-gray-400 peer-focus:text-emerald-400 font-bold text-sm bg-gray-900 px-2 rounded">
-                          Code postal (facultatif)
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div className="relative mt-4">
+  <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-500 peer-focus:text-emerald-400 transition-colors z-10" />
+  <input
+    type="text"
+    value={form.address}
+    onChange={(e) => setForm({ ...form, address: e.target.value })}
+    required
+    placeholder=" "
+    className="peer w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-700 
+               bg-black/30 backdrop-blur-md text-white 
+               placeholder-transparent 
+               focus:border-emerald-500 focus:outline-none 
+               focus:ring-4 focus:ring-emerald-500/20 
+               focus:bg-black/50 
+               transition-all duration-300"
+  />
+  <label className="absolute left-12 top-4 
+                    pointer-events-none 
+                    transition-all duration-300 
+                    text-gray-400 peer-focus:text-emerald-400 
+                    font-bold text-sm 
+                    peer-focus:-top-3 peer-focus:left-4 peer-focus:text-xs 
+                    peer-[:not(:placeholder-shown)]:-top-3 
+                    peer-[:not(:placeholder-shown)]:left-4 
+                    peer-[:not(:placeholder-shown)]:text-xs 
+                    bg-gradient-to-t from-transparent via-gray-950/80 to-transparent 
+                    px-2">
+    Adresse complète (rue, quartier, immeuble...)
+  </label>
+</div>
 
                 {/* Paiement */}
                 <div className="border-t-2 border-gray-800 pt-6">

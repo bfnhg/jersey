@@ -1,19 +1,24 @@
-// src/components/ui/PlaceholdersAndVanishInput.tsx
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../..//lib/utils";
+
+type Props = {
+  placeholders: string[];
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: (query: string) => void;
+  theme?: "dark" | "light";
+  className?: string;
+};
 
 export function PlaceholdersAndVanishInput({
   placeholders,
   onChange,
   onSubmit,
-}: {
-  placeholders: string[];
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit?: (query: string) => void;
-}) {
+  theme = "dark",
+  className,
+}: Props) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,11 +27,11 @@ export function PlaceholdersAndVanishInput({
   const [animating, setAnimating] = useState(false);
   const newDataRef = useRef<any[]>([]);
 
-  // Rotation des placeholders
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
     }, 3000);
+
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
@@ -46,39 +51,44 @@ export function PlaceholdersAndVanishInput({
     const computedStyles = getComputedStyle(inputRef.current);
     const fontSize = parseFloat(computedStyles.fontSize);
     ctx.font = `${fontSize * 1.8}px ${computedStyles.fontFamily}`;
-    ctx.fillStyle = "#fff";
-    ctx.fillText(value, 16, 36);
+    ctx.fillStyle = theme === "light" ? "#000" : "#fff";
+    ctx.textBaseline = "middle";
+    ctx.fillText(value, 16, canvas.height / 4);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const particles: any[] = [];
 
     for (let y = 0; y < canvas.height; y += 4) {
       for (let x = 0; x < canvas.width; x += 4) {
-        const i = (y * canvas.width + x) * 4;
-        if (imageData.data[i + 3] > 128) {
-          particles.push({ x, y });
+        const index = (y * canvas.width + x) * 4;
+        if (imageData.data[index + 3] > 128) {
+          particles.push({ x: x / 2, y: y / 2 });
         }
       }
     }
 
-    newDataRef.current = particles.map(p => ({
-      x: p.x / 2,
-      y: p.y / 2,
-      r: 1.5,
+    newDataRef.current = particles.map(() => ({
+      x: Math.random() * canvas.offsetWidth,
+      y: Math.random() * canvas.offsetHeight,
+      r: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 6,
+      vy: (Math.random() - 0.5) * 6,
     }));
-  }, [value]);
+  }, [value, theme]);
 
-  const animate = () => {
+  const animate = useCallback(() => {
     if (!canvasRef.current) return;
-    const ctx = canvasRef.current.getContext("2d");
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const animateFrame = () => {
-      ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-      newDataRef.current = newDataRef.current.filter(p => p.r > 0.1);
-      newDataRef.current.forEach(p => {
-        p.x += (Math.random() - 0.5) * 4;
-        p.y += (Math.random() - 0.5) * 4;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      newDataRef.current = newDataRef.current.filter((p) => p.r > 0.2);
+
+      newDataRef.current.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
         p.r *= 0.96;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -90,11 +100,13 @@ export function PlaceholdersAndVanishInput({
         requestAnimationFrame(animateFrame);
       } else {
         setAnimating(false);
-        setValue("");
+        setValue(""); // Vide après animation
+        onChange?.({ target: { value: "" } } as any);
       }
     };
+
     animateFrame();
-  };
+  }, [onChange]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,41 +114,49 @@ export function PlaceholdersAndVanishInput({
 
     setAnimating(true);
     draw();
-    setTimeout(() => {
-      animate();
-      onSubmit?.(value);
-    }, 100);
+    setTimeout(() => animate(), 100);
+    onSubmit?.(value);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    onChange?.(e);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div className="relative flex items-center w-64 sm:w-80">
+    <form onSubmit={handleSubmit} className={cn("relative", className)}>
+      <div className="relative flex max-w-sm items-center">
         <input
           ref={inputRef}
           type="text"
           value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            onChange?.(e);
-          }}
+          onChange={handleChange}
           className={cn(
-            "w-full h-12 bg-white/10 backdrop-blur-md rounded-full pl-12 pr-12 text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-400 transition",
+            "w-full h-11 rounded-full pl-12 pr-4 text-base outline-none transition-all",
+            theme === "dark"
+              ? "bg-white/10 backdrop-blur-md text-white placeholder-transparent"
+              : "bg-white/80 text-black",
             animating && "text-transparent"
           )}
-          placeholder="Rechercher..."
+          placeholder={placeholders[0]}
         />
 
-        {/* Icône Loupe */}
+        {/* Icône de recherche */}
         <button
           type="submit"
-          className="absolute left-4 text-green-400 hover:text-green-300 transition"
+          disabled={animating}
+          className={cn(
+            "absolute left-4 transition-colors",
+            theme === "dark" ? "text-green-400 hover:text-green-300" : "text-gray-600"
+          )}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </button>
 
-        {/* Canvas pour l'effet particules */}
+        {/* Canvas particules */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 pointer-events-none rounded-full"
@@ -148,11 +168,14 @@ export function PlaceholdersAndVanishInput({
           {!value && !animating && (
             <motion.p
               key={currentPlaceholder}
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 0.5 }}
-              exit={{ y: -10, opacity: 0 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 0.5, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="absolute left-12 text-white/50 pointer-events-none text-sm sm:text-base"
+              className={cn(
+                "absolute left-12 pointer-events-none text-base",
+                theme === "dark" ? "text-white/50" : "text-black/50"
+              )}
             >
               {placeholders[currentPlaceholder]}
             </motion.p>
